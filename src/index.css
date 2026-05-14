@@ -1,0 +1,74 @@
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --cream:        #F7F3EE;
+  --white:        #FFFFFF;
+  --light-brown:  #C4956A;
+  --mid-brown:    #8B5E3C;
+  --dark-brown:   #4A2C17;
+  --text-primary: #2E1A0E;
+  --text-muted:   #9A7A62;
+
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+
+  --transition-slow:   0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-medium: 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast:   0.3s ease;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--light-brown);
+  border-radius: 2px;
+}
+
+/* ===== SELECTION ===== */
+::selection {
+  background: var(--light-brown);
+  color: var(--white);
+}

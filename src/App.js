@@ -33,7 +33,7 @@ function App() {
     {
       id: 'github',
       label: 'GitHub',
-      href: 'https://github.com/SC3T1C',
+      href: 'https://github.com/Kummorrii',
       icon: <FaGithub />,
     },
   ];

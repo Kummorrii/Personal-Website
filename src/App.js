@@ -52,8 +52,6 @@ function App() {
   }, []);
 
   const handleDropImpact = useCallback(() => {
-    // eslint-disable-next-line no-unused-vars
-    let frameId;
     const start = performance.now();
     const rippleDuration = 900;
     const introDuration = 1600;

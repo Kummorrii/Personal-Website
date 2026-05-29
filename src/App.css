@@ -6,6 +6,22 @@
   flex-direction: column;
   min-height: 100vh;
   position: relative;
+  z-index: 1;
+}
+
+.app--intro .bg-grain,
+.app--intro .bg-circle {
+  opacity: 0;
+}
+
+.app--ready .bg-grain {
+  transition: opacity 1.2s ease 0.2s;
+  opacity: 0.025;
+}
+
+.app--ready .bg-circle {
+  transition: opacity 1.4s ease 0.4s;
+  opacity: 1;
 }
 
 /* ============================================================
@@ -71,6 +87,305 @@
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+@keyframes photoGlowPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+    filter: sepia(12%) contrast(1.04) brightness(0.45);
+    box-shadow:
+      0 0 0 rgba(196, 149, 106, 0),
+      0 0 0 rgba(255, 220, 180, 0);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.04);
+    filter: sepia(12%) contrast(1.08) brightness(1.2);
+    box-shadow:
+      0 0 48px rgba(196, 149, 106, 0.55),
+      0 0 96px rgba(255, 220, 180, 0.35),
+      0 20px 60px rgba(74, 44, 23, 0.22);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: sepia(12%) contrast(1.04) brightness(0.97);
+    box-shadow:
+      0 20px 60px rgba(74, 44, 23, 0.18),
+      0 4px 16px rgba(74, 44, 23, 0.12);
+  }
+}
+
+@keyframes textGlowIn {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+    text-shadow:
+      0 0 32px rgba(196, 149, 106, 0.85),
+      0 0 64px rgba(255, 230, 200, 0.45);
+    filter: brightness(1.6);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-2px);
+    text-shadow:
+      0 0 24px rgba(196, 149, 106, 0.6),
+      0 0 48px rgba(255, 230, 200, 0.3);
+    filter: brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    text-shadow:
+      0 3px 12px rgba(255, 255, 255, 0.6),
+      0 1px 3px rgba(255, 255, 255, 0.4);
+    filter: brightness(1);
+  }
+}
+
+@keyframes textGlowInSmall {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+    text-shadow:
+      0 0 24px rgba(196, 149, 106, 0.8),
+      0 0 48px rgba(255, 230, 200, 0.4);
+    filter: brightness(1.5);
+  }
+  55% {
+    opacity: 1;
+    text-shadow:
+      0 0 18px rgba(196, 149, 106, 0.5),
+      0 0 36px rgba(255, 230, 200, 0.25);
+    filter: brightness(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    text-shadow:
+      0 2px 8px rgba(255, 255, 255, 0.5),
+      0 0 1px rgba(255, 255, 255, 0.3);
+    filter: brightness(1);
+  }
+}
+
+@keyframes uiGlowIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+    filter: brightness(1.5);
+    text-shadow:
+      0 0 20px rgba(196, 149, 106, 0.7),
+      0 0 40px rgba(255, 230, 200, 0.35);
+  }
+  60% {
+    opacity: 1;
+    filter: brightness(1.2);
+    text-shadow:
+      0 0 16px rgba(196, 149, 106, 0.45),
+      0 0 32px rgba(255, 230, 200, 0.2);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: brightness(1);
+    text-shadow:
+      0 2px 8px rgba(255, 255, 255, 0.6),
+      0 0 2px rgba(255, 255, 255, 0.4);
+  }
+}
+
+@keyframes iconGlowPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.55) translateY(8px);
+    filter: drop-shadow(0 0 16px rgba(196, 149, 106, 0.8)) brightness(1.6);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(1.1) translateY(-2px);
+    filter: drop-shadow(0 0 12px rgba(196, 149, 106, 0.55)) brightness(1.25);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 2px 6px rgba(255, 255, 255, 0.5)) brightness(1);
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.98); }
+  50%      { opacity: 0.75; transform: scale(1.02); }
+}
+
+@keyframes dropFall {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px) scale(0.6);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+  88% {
+    transform: translate(-50%, 42vh) scale(1.05, 1.2);
+  }
+  100% {
+    opacity: 0.9;
+    transform: translate(-50%, 44vh) scale(1.15, 0.75);
+  }
+}
+
+@keyframes splashBurst {
+  0% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.8);
+  }
+}
+
+@keyframes splashRing {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(0.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(3.5);
+  }
+}
+
+/* ============================================================
+   DYNAMIC TEXT (smooth fade between light/dark glow)
+   ============================================================ */
+@property --text-blend {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.dynamic-text {
+  --text-blend: 0;
+  transition: --text-blend 0.85s ease, color 0.85s ease, text-shadow 0.85s ease;
+}
+
+.dynamic-text,
+.dynamic-text .hero__eyebrow,
+.dynamic-text .hero__name,
+.dynamic-text .hero__tagline,
+.dynamic-text .header__logo,
+.dynamic-text .header__contact,
+.dynamic-text .footer__copy {
+  color: color-mix(
+    in srgb,
+    #f7f3ee calc((1 - var(--text-blend)) * 100%),
+    #2a180c calc(var(--text-blend) * 100%)
+  );
+  text-shadow:
+    0 2px 18px rgba(255, 255, 255, calc((1 - var(--text-blend)) * 0.78)),
+    0 0 14px rgba(255, 235, 210, calc((1 - var(--text-blend)) * 0.48)),
+    0 1px 3px rgba(255, 255, 255, calc((1 - var(--text-blend)) * 0.32)),
+    0 2px 14px rgba(35, 22, 10, calc(var(--text-blend) * 0.52)),
+    0 0 10px rgba(50, 32, 16, calc(var(--text-blend) * 0.38)),
+    0 1px 2px rgba(30, 18, 8, calc(var(--text-blend) * 0.28));
+}
+
+.dynamic-text .social__icon {
+  color: color-mix(
+    in srgb,
+    #f7f3ee calc((1 - var(--text-blend)) * 100%),
+    #2a180c calc(var(--text-blend) * 100%)
+  );
+  filter:
+    drop-shadow(0 2px 12px rgba(255, 255, 255, calc((1 - var(--text-blend)) * 0.62)))
+    drop-shadow(0 2px 10px rgba(40, 25, 12, calc(var(--text-blend) * 0.48)));
+  transition: color 0.85s ease, filter 0.85s ease;
+}
+
+.dynamic-text .social__icon::before {
+  color: color-mix(
+    in srgb,
+    #f7f3ee calc((1 - var(--text-blend)) * 100%),
+    #2a180c calc(var(--text-blend) * 100%)
+  );
+  text-shadow:
+    0 2px 10px rgba(255, 255, 255, calc((1 - var(--text-blend)) * 0.55)),
+    0 2px 8px rgba(40, 25, 12, calc(var(--text-blend) * 0.42));
+}
+
+/* ============================================================
+   WATER DROP INTRO
+   ============================================================ */
+.water-drop-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.water-drop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 16px;
+  height: 22px;
+  border-radius: 50% 50% 50% 50% / 55% 55% 45% 45%;
+  background: radial-gradient(
+    ellipse at 35% 30%,
+    rgba(220, 235, 255, 0.95) 0%,
+    rgba(160, 200, 240, 0.75) 40%,
+    rgba(100, 160, 220, 0.5) 100%
+  );
+  box-shadow:
+    0 0 12px rgba(180, 220, 255, 0.6),
+    inset 0 -4px 8px rgba(80, 140, 200, 0.3);
+  opacity: 0;
+  transform: translate(-50%, -20px);
+}
+
+.water-drop--falling {
+  animation: dropFall 0.8s cubic-bezier(0.55, 0.06, 0.9, 0.5) forwards;
+}
+
+.water-splash {
+  position: absolute;
+  top: 44vh;
+  left: 50%;
+  width: 80px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(200, 230, 255, 0.55) 0%,
+    rgba(160, 200, 240, 0.2) 50%,
+    transparent 70%
+  );
+  transform: translate(-50%, -50%) scale(0.2);
+  animation: splashBurst 0.7s ease-out forwards;
+}
+
+.water-splash--2 {
+  width: 120px;
+  height: 60px;
+  animation-delay: 0.05s;
+  opacity: 0.4;
+}
+
+.water-splash-ring {
+  position: absolute;
+  top: 44vh;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(190, 225, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  animation: splashRing 0.85s ease-out forwards;
+}
+
 /* ============================================================
    HEADER / NAV
    ============================================================ */
@@ -85,10 +400,11 @@
   justify-content: space-between;
   padding: 1.5rem 3rem;
   mix-blend-mode: normal;
+  opacity: 0;
 }
 
 .header.visible {
-  animation: fadeDown 0.5s ease 0.6s both;
+  animation: uiGlowIn 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .header__logo {
@@ -97,7 +413,6 @@
   font-weight: 500;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--dark-brown);
 }
 
 .header__contact {
@@ -106,13 +421,12 @@
   font-weight: 400;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--mid-brown);
-  transition: color var(--transition-fast);
+  transition: color var(--transition-fast), text-shadow var(--transition-fast);
   cursor: pointer;
 }
 
 .header__contact:hover {
-  color: var(--dark-brown);
+  opacity: 0.85;
 }
 
 /* ============================================================
@@ -126,6 +440,7 @@
   padding: 6rem 3rem 4rem;
   min-height: 100vh;
   position: relative;
+  z-index: 10;
 }
 
 /* Desktop: side-by-side */
@@ -146,7 +461,26 @@
 }
 
 .hero__photo-wrap.animate {
-  animation: scaleIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+  animation: photoGlowPop 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.hero__photo-glow {
+  position: absolute;
+  inset: -24px;
+  border-radius: 12px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(196, 149, 106, 0.45) 0%,
+    rgba(255, 220, 180, 0.15) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.hero__photo-wrap.animate .hero__photo-glow {
+  animation: glowPulse 1.4s ease 0.15s 2 forwards;
 }
 
 .hero__photo {
@@ -209,12 +543,11 @@
   font-weight: 500;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--light-brown);
   opacity: 0;
 }
 
 .hero__eyebrow.animate {
-  animation: fadeUp 0.5s ease 0.4s forwards;
+  animation: textGlowInSmall 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
 }
 
 .hero__name {
@@ -222,7 +555,6 @@
   font-size: clamp(3rem, 6vw, 4.8rem);
   font-weight: 300;
   line-height: 1.05;
-  color: var(--dark-brown);
   letter-spacing: -0.01em;
   opacity: 0;
 }
@@ -237,7 +569,7 @@
 }
 
 .hero__name.animate {
-  animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.5s forwards;
+  animation: textGlowIn 0.95s cubic-bezier(0.22, 1, 0.36, 1) 0.22s forwards;
 }
 
 /* Decorative divider */
@@ -258,14 +590,13 @@
   font-size: 0.85rem;
   font-weight: 300;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
   line-height: 1.7;
   max-width: 240px;
   opacity: 0;
 }
 
 .hero__tagline.animate {
-  animation: fadeUp 0.5s ease 0.8s forwards;
+  animation: textGlowInSmall 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
 }
 
 /* ============================================================
@@ -279,10 +610,11 @@
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  z-index: 50;
 }
 
-.social.visible {
-  /* staggered per icon via inline style */
+.social.visible .social__line {
+  animation: fadeIn 0.5s ease 0.15s forwards;
 }
 
 .social__line {
@@ -290,7 +622,7 @@
   height: 40px;
   background: linear-gradient(to bottom, transparent, var(--light-brown));
   margin-bottom: 0.25rem;
-  animation: fadeIn 0.5s ease 1.0s forwards;
+  opacity: 0;
 }
 
 .social__icon {
@@ -300,17 +632,16 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  color: var(--mid-brown);
   opacity: 0;
   transition:
     color var(--transition-fast),
     transform var(--transition-fast),
-    background var(--transition-fast);
+    background var(--transition-fast),
+    filter var(--transition-fast);
   position: relative;
 }
 
 .social__icon:hover {
-  color: var(--dark-brown);
   transform: translateY(-3px) scale(1.12);
   background: rgba(196, 149, 106, 0.12);
 }
@@ -319,10 +650,9 @@
   font-size: 1.15rem;
 }
 
-/* Staggered icon entrance */
-.social__icon:nth-child(2) { animation: iconPop 0.5s ease 1.1s forwards; }
-.social__icon:nth-child(3) { animation: iconPop 0.5s ease 1.2s forwards; }
-.social__icon:nth-child(4) { animation: iconPop 0.5s ease 1.3s forwards; }
+.social.visible .social__icon:nth-child(2) { animation: iconGlowPop 0.65s ease 0.25s forwards; }
+.social.visible .social__icon:nth-child(3) { animation: iconGlowPop 0.65s ease 0.4s forwards; }
+.social.visible .social__icon:nth-child(4) { animation: iconGlowPop 0.65s ease 0.55s forwards; }
 
 /* Tooltip */
 .social__icon::before {
@@ -335,11 +665,10 @@
   font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--mid-brown);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--transition-fast);
+  transition: opacity var(--transition-fast), color var(--transition-fast), text-shadow var(--transition-fast);
 }
 
 .social__icon:hover::before {
@@ -356,7 +685,7 @@
 }
 
 .footer.visible {
-  animation: fadeIn 0.5s ease 1.5s forwards;
+  animation: uiGlowIn 0.75s ease 0.35s both;
 }
 
 .footer__copy {
@@ -364,7 +693,6 @@
   font-size: 0.62rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 /* ============================================================

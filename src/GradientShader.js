@@ -8,13 +8,9 @@ const GradientShader = ({
   onCanvasReady,
 }) => {
   const canvasRef = useRef(null);
-  const mousePos = useRef({ x: 0.5, y: 0.5 });
-  const mouseVel = useRef({ x: 0, y: 0 });
   const timeRef = useRef(0);
   const introRevealRef = useRef(introReveal);
   const rippleRevealRef = useRef(rippleReveal);
-  const interactingRef = useRef(0);
-  const lastMoveRef = useRef(0);
   const getSamplePointsRef = useRef(getSamplePoints);
   const onLuminanceRef = useRef(onLuminance);
   const onCanvasReadyRef = useRef(onCanvasReady);

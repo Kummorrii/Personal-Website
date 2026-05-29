@@ -8,18 +8,17 @@ const GradientShader = ({
   onCanvasReady,
 }) => {
   const canvasRef = useRef(null);
-  const mousePos = useRef({ x: 0.5, y: 0.5 });
-  const mouseVel = useRef({ x: 0, y: 0 });
-  const rippleCenter = useRef({ x: 0.5, y: 0.5 });
   const timeRef = useRef(0);
   const introRevealRef = useRef(introReveal);
   const rippleRevealRef = useRef(rippleReveal);
-  const interactingRef = useRef(0);
-  const lastMoveRef = useRef(0);
   const getSamplePointsRef = useRef(getSamplePoints);
   const onLuminanceRef = useRef(onLuminance);
   const onCanvasReadyRef = useRef(onCanvasReady);
   const pixelBuf = useRef(new Uint8Array(4));
+  const glRef = useRef(null);
+  const programRef = useRef(null);
+  const uniformsRef = useRef({});
+  const frameIdRef = useRef(null);
 
   useEffect(() => {
     introRevealRef.current = introReveal;
@@ -46,6 +45,8 @@ const GradientShader = ({
       return;
     }
 
+    glRef.current = gl;
+
     const vertexShaderSource = `
       attribute vec2 position;
       void main() {
@@ -59,7 +60,6 @@ const GradientShader = ({
       uniform vec2 resolution;
       uniform vec2 mouse;
       uniform vec2 mouseVel;
-      uniform vec2 rippleCenter;
       uniform float intro;
       uniform float ripple;
       uniform float interacting;
@@ -143,7 +143,7 @@ const GradientShader = ({
         float softPulse = 0.5 + 0.5 * fbm(sampleP * 0.9 + warpB * 0.6 + flowTime * 0.18);
         color = mix(color, cream, softPulse * 0.08);
 
-        vec2 dropCenter = vec2(rippleCenter.x * aspect, rippleCenter.y);
+        vec2 dropCenter = mouse;
         float dropDist = distance(p, dropCenter);
         float rippleWave = sin(dropDist * 9.0 - ripple * 14.0) * exp(-dropDist * 2.8) * (1.0 - ripple);
         float rippleReveal = smoothstep(0.0, 1.0, ripple) + rippleWave * 0.12 * (1.0 - ripple);
@@ -185,6 +185,8 @@ const GradientShader = ({
       console.error('Program link error:', gl.getProgramInfoLog(program));
     }
 
+    programRef.current = program;
+
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(
@@ -193,15 +195,16 @@ const GradientShader = ({
       gl.STATIC_DRAW
     );
 
-    const timeUniform = gl.getUniformLocation(program, 'time');
-    const resolutionUniform = gl.getUniformLocation(program, 'resolution');
-    const mouseUniform = gl.getUniformLocation(program, 'mouse');
-    const mouseVelUniform = gl.getUniformLocation(program, 'mouseVel');
-    const rippleCenterUniform = gl.getUniformLocation(program, 'rippleCenter');
-    const introUniform = gl.getUniformLocation(program, 'intro');
-    const rippleUniform = gl.getUniformLocation(program, 'ripple');
-    const interactingUniform = gl.getUniformLocation(program, 'interacting');
-    const positionAttrib = gl.getAttribLocation(program, 'position');
+    uniformsRef.current = {
+      time: gl.getUniformLocation(program, 'time'),
+      resolution: gl.getUniformLocation(program, 'resolution'),
+      mouse: gl.getUniformLocation(program, 'mouse'),
+      mouseVel: gl.getUniformLocation(program, 'mouseVel'),
+      intro: gl.getUniformLocation(program, 'intro'),
+      ripple: gl.getUniformLocation(program, 'ripple'),
+      interacting: gl.getUniformLocation(program, 'interacting'),
+      positionAttrib: gl.getAttribLocation(program, 'position'),
+    };
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
@@ -213,56 +216,27 @@ const GradientShader = ({
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const handleMouseMove = (e) => {
-      const nx = e.clientX / window.innerWidth;
-      const ny = 1.0 - e.clientY / window.innerHeight;
-      mouseVel.current.x = (nx - mousePos.current.x) * 3.5;
-      mouseVel.current.y = (ny - mousePos.current.y) * 3.5;
-      mousePos.current.x = nx;
-      mousePos.current.y = ny;
-      interactingRef.current = 1.0;
-      lastMoveRef.current = performance.now();
-    };
-
-    const handleMouseLeave = () => {
-      interactingRef.current = 0.0;
-      mouseVel.current.x = 0;
-      mouseVel.current.y = 0;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    document.addEventListener('mouseleave', handleMouseLeave);
-
-    let frameId;
-    let frameCount = 0;
-    const animate = () => {
+    // Rendering function
+    const renderFrame = () => {
       timeRef.current += 0.016;
 
-      if (performance.now() - lastMoveRef.current > 120) {
-        interactingRef.current = Math.max(0, interactingRef.current - 0.06);
-        mouseVel.current.x *= 0.92;
-        mouseVel.current.y *= 0.92;
-      }
-
-      rippleCenter.current.x += (mousePos.current.x - rippleCenter.current.x) * 0.08;
-      rippleCenter.current.y += (mousePos.current.y - rippleCenter.current.y) * 0.08;
-
+      // Render frame
       gl.useProgram(program);
-      gl.uniform1f(timeUniform, timeRef.current);
-      gl.uniform2f(resolutionUniform, canvas.width, canvas.height);
-      gl.uniform2f(mouseUniform, mousePos.current.x, mousePos.current.y);
-      gl.uniform2f(mouseVelUniform, mouseVel.current.x, mouseVel.current.y);
-      gl.uniform2f(rippleCenterUniform, rippleCenter.current.x, rippleCenter.current.y);
-      gl.uniform1f(introUniform, introRevealRef.current);
-      gl.uniform1f(rippleUniform, rippleRevealRef.current);
-      gl.uniform1f(interactingUniform, interactingRef.current);
+      gl.uniform1f(uniformsRef.current.time, timeRef.current);
+      gl.uniform2f(uniformsRef.current.resolution, canvas.width, canvas.height);
+      gl.uniform2f(uniformsRef.current.mouse, 0.5, 0.5);
+      gl.uniform2f(uniformsRef.current.mouseVel, 0, 0);
+      gl.uniform1f(uniformsRef.current.intro, introRevealRef.current);
+      gl.uniform1f(uniformsRef.current.ripple, rippleRevealRef.current);
+      gl.uniform1f(uniformsRef.current.interacting, 0);
 
       gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-      gl.vertexAttribPointer(positionAttrib, 2, gl.FLOAT, false, 0, 0);
-      gl.enableVertexAttribArray(positionAttrib);
+      gl.vertexAttribPointer(uniformsRef.current.positionAttrib, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(uniformsRef.current.positionAttrib);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
+      // Sample luminance
       frameCount += 1;
       if (frameCount % 2 === 0 && onLuminanceRef.current && getSamplePointsRef.current) {
         const points = getSamplePointsRef.current();
@@ -279,16 +253,26 @@ const GradientShader = ({
           onLuminanceRef.current(luminance);
         }
       }
+    };
 
-      frameId = requestAnimationFrame(animate);
+    const handleMouseLeave = () => {
+      // Placeholder - not used
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    // Single animation loop
+    let frameCount = 0;
+    const animate = () => {
+      renderFrame();
+      frameIdRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
-      cancelAnimationFrame(frameId);
+      if (frameIdRef.current) cancelAnimationFrame(frameIdRef.current);
       window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);

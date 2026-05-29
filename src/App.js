@@ -27,6 +27,7 @@ function App() {
   const footerRef = useRef(null);
   const canvasSizeRef = useRef({ width: 0, height: 0 });
   const smoothBlendRef = useRef({ hero: 0, header: 0, social: 0, footer: 0 });
+  const frameIdRef = useRef(null);
 
   useEffect(() => {
     document.body.classList.add('intro-active');
@@ -34,7 +35,6 @@ function App() {
     const t1 = setTimeout(() => setPhotoReady(true), 300);
     const t2 = setTimeout(() => setTextReady(true), 850);
     const t3 = setTimeout(() => setUiReady(true), 1300);
-    // Text tagline finishes ~850 + 550ms delay + 850ms anim ≈ 2250ms
     const tDrop = setTimeout(() => setDropActive(true), 2300);
     const t4 = setTimeout(() => {
       setPageReady(true);
@@ -52,7 +52,6 @@ function App() {
   }, []);
 
   const handleDropImpact = useCallback(() => {
-    let frameId;
     const start = performance.now();
     const rippleDuration = 900;
     const introDuration = 1600;
@@ -69,11 +68,11 @@ function App() {
       setBgFlowing(true);
 
       if (rippleProgress < 1 || introProgress < 1) {
-        frameId = requestAnimationFrame(tick);
+        frameIdRef.current = requestAnimationFrame(tick);
       }
     };
 
-    frameId = requestAnimationFrame(tick);
+    frameIdRef.current = requestAnimationFrame(tick);
   }, []);
 
   const getSamplePoints = useCallback(() => {

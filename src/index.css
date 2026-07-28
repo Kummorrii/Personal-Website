@@ -1,12 +1,21 @@
 /* ===== DESIGN TOKENS ===== */
 :root {
+  --bg-deep:      #0b0e14;
+  --bg-mid:       #141a24;
+  --bg-warm:      #1c1310;
   --cream:        #F7F3EE;
   --white:        #FFFFFF;
   --light-brown:  #C4956A;
   --mid-brown:    #8B5E3C;
   --dark-brown:   #4A2C17;
-  --text-primary: #2E1A0E;
-  --text-muted:   #9A7A62;
+  --text-primary: #F3EFE9;
+  --text-muted:   #A9AFBC;
+
+  --glass-bg:        rgba(255, 255, 255, 0.06);
+  --glass-bg-strong: rgba(255, 255, 255, 0.1);
+  --glass-border:    rgba(255, 255, 255, 0.16);
+  --glass-highlight: rgba(255, 255, 255, 0.35);
+  --accent:          #C4956A;
 
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans:  'Inter', system-ui, sans-serif;
@@ -29,18 +38,13 @@ html {
 }
 
 body {
-  background-color: var(--cream);
+  background-color: var(--bg-deep);
   color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   min-height: 100vh;
-  transition: background-color 1s ease;
-}
-
-body.intro-active {
-  background-color: #080605;
 }
 
 a {
@@ -65,7 +69,7 @@ button {
   width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--cream);
+  background: var(--bg-deep);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--light-brown);
@@ -75,5 +79,5 @@ button {
 /* ===== SELECTION ===== */
 ::selection {
   background: var(--light-brown);
-  color: var(--white);
+  color: var(--bg-deep);
 }

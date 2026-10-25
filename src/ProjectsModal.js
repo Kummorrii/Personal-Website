@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { FaGithub, FaTimes } from 'react-icons/fa';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 
 function ProjectsModal({ projects, onClose }) {
   useEffect(() => {
@@ -36,28 +37,14 @@ function ProjectsModal({ projects, onClose }) {
         <div className="modal__body">
           <h2 className="modal__title">Selected projects &amp; implementation work.</h2>
           <p className="modal__subtitle">
-            Full-stack and machine-learning builds, with more on the way as new projects ship.
+            Interactive web, game development, and machine learning, with more on the way as new projects ship.
           </p>
 
           <div className="modal__grid">
             {projects.map((project) => (
-              <a
-                key={project.id}
-                className="project-card-full"
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  className="project-card-full__image"
-                  src={project.image}
-                  alt={project.title}
-                />
+              <article key={project.id} className="project-card-full">
                 <h3 className="project-card-full__title">{project.title}</h3>
                 <p className="project-card-full__role">{project.role}</p>
-                {project.badge && (
-                  <p className="project-card-full__badge">{project.badge}</p>
-                )}
                 <p className="project-card-full__team">{project.team}</p>
 
                 <p className="project-card-full__description">{project.description}</p>
@@ -68,16 +55,33 @@ function ProjectsModal({ projects, onClose }) {
                   ))}
                 </ul>
 
-                <div className="project-expanded__tags">
+                <div className="project-card-full__tags">
                   {project.tags.map((tag) => (
                     <span className="tag-chip" key={tag}>{tag}</span>
                   ))}
                 </div>
 
-                <span className="project-card-full__link">
-                  <FaGithub /> View on GitHub
-                </span>
-              </a>
+                <div className="project-card-full__links">
+                  <a
+                    className="project-card-full__link"
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <FaGithub /> View on GitHub
+                  </a>
+                  {project.liveHref && (
+                    <a
+                      className="project-card-full__link"
+                      href={project.liveHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaArrowUpRightFromSquare /> Open live site
+                    </a>
+                  )}
+                </div>
+              </article>
             ))}
           </div>
         </div>

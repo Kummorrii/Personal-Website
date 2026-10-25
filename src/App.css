@@ -100,7 +100,7 @@
   height: min(720px, 86vh);
   display: grid;
   grid-template-columns: 1.65fr 1fr;
-  grid-template-rows: minmax(140px, 0.62fr) minmax(64px, auto) 1.5fr;
+  grid-template-rows: minmax(190px, 0.8fr) minmax(64px, auto) 1.4fr;
   grid-template-areas:
     "name     projects"
     "stack    stack"
@@ -177,32 +177,41 @@
 }
 
 .project-preview {
+  list-style: none;
   border-radius: 14px;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.05);
-  padding: 0.85rem;
-  margin-top: 0.9rem;
+  padding: 0.4rem 0.85rem;
+  margin-top: 0.75rem;
+}
+
+.project-preview__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+}
+
+.project-preview__row + .project-preview__row {
+  border-top: 1px solid var(--glass-border);
 }
 
 .project-preview__title {
   font-family: var(--font-serif);
   font-size: 1rem;
   color: var(--text-primary);
-  margin-bottom: 0.15rem;
+  white-space: nowrap;
 }
 
 .project-preview__role {
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 0.6rem;
-}
-
-.project-preview__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ---- Name card (compact identity tile) ---- */
@@ -328,8 +337,10 @@
 }
 
 .social-ticker {
+  position: relative;
   flex-shrink: 0;
   width: 56px;
+  min-height: 0;
   overflow: hidden;
   border-radius: 16px;
   border: 1px solid var(--glass-border);
@@ -339,12 +350,16 @@
 }
 
 .social-ticker__track {
+  /* Out of flow: the track is far taller than the tile (repeated icons),
+     so it must not influence the tile's height. */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
-  padding: 1rem 0;
-  animation: ticker-vertical 14s linear infinite;
+  animation: ticker-vertical var(--ticker-duration) linear infinite;
 }
 
 .social-ticker__icon {
@@ -354,6 +369,7 @@
   width: 38px;
   height: 38px;
   flex-shrink: 0;
+  margin-bottom: 0.85rem;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
   background: rgba(255, 255, 255, 0.06);
@@ -419,7 +435,6 @@
 .tech-ticker__track {
   display: flex;
   align-items: center;
-  gap: 1.75rem;
   width: max-content;
   animation: ticker-horizontal 26s linear infinite;
 }
@@ -428,6 +443,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  margin-right: 1.75rem;
   font-size: 0.85rem;
   color: var(--text-primary);
   white-space: nowrap;
@@ -452,7 +468,12 @@
 
 @keyframes ticker-vertical {
   from { transform: translateY(0); }
-  to   { transform: translateY(-50%); }
+  to   { transform: translateY(calc(-100% / var(--copies, 2))); }
+}
+
+@keyframes ticker-horizontal-copies {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% / var(--copies, 2))); }
 }
 
 /* ============================================================
@@ -473,7 +494,7 @@
 
 .modal {
   width: 100%;
-  max-width: 880px;
+  max-width: 1040px;
   max-height: 86vh;
   display: flex;
   flex-direction: column;
@@ -646,7 +667,7 @@
 
 .modal__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 1.25rem;
 }
 
@@ -662,15 +683,7 @@
 }
 
 .project-card-full:hover {
-  background: rgba(255, 255, 255, 0.08);
-  transform: translateY(-3px);
-}
-
-.project-card-full__image {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid var(--glass-border);
-  margin-bottom: 0.3rem;
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .project-card-full__title {
@@ -721,6 +734,21 @@
   color: var(--accent);
 }
 
+.project-card-full__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.project-card-full__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  margin-top: auto;
+  padding-top: 0.6rem;
+}
+
 .project-card-full__link {
   display: inline-flex;
   align-items: center;
@@ -728,8 +756,7 @@
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--accent);
-  margin-top: 0.3rem;
-}
+  }
 
 .project-card-full__link:hover {
   text-decoration: underline;
@@ -782,10 +809,17 @@
     height: 64px;
   }
 
+  .social-ticker__icon {
+    margin: 0 0.85rem 0 0;
+  }
+
   .social-ticker__track {
     flex-direction: row;
-    padding: 0 1rem;
-    animation: ticker-horizontal 14s linear infinite;
+    align-items: center;
+    right: auto;
+    bottom: 0;
+    width: max-content;
+    animation: ticker-horizontal-copies var(--ticker-duration) linear infinite;
   }
 
   .corner-text--left,

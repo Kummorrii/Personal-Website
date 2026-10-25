@@ -23,12 +23,46 @@ const interests = [
 
 const projects = [
   {
+    id: 'project-cosima',
+    title: 'Project Cosima',
+    role: 'Creator · 2026',
+    team: 'Solo project',
+    description:
+      'An interactive 3D map of the Milky Way. Fly to any star, galaxy, or nebula, see it up close, and read about it.',
+    bullets: [
+      'Renders a procedural 60,000-star galaxy with custom GLSL shaders, so rotation, twinkling, and flares run on the GPU.',
+      'Places about 40,000 real stars from the HYG catalog at their true 3D positions around the Sun.',
+      'Resolves any object name through SIMBAD, then flies the camera there along a smooth arc.',
+      'Shows a detail panel on arrival with a real sky image, distance, coordinates, and a Wikipedia summary.',
+      'Adds a focus mode with a stylized 3D model matched to the object type, plus NASA’s Astronomy Picture of the Day.',
+      'Keeps the NASA API key on the server with small Vercel serverless functions.',
+    ],
+    tags: ['React', 'TypeScript', 'Three.js', 'GLSL', 'Vite', 'Vercel'],
+    href: 'https://github.com/Kummorrii/Project-Cosima',
+    liveHref: 'https://project-cosima.vercel.app',
+  },
+  {
+    id: 'game-jam',
+    title: 'Game Jam Project',
+    role: 'Game Developer · 2026',
+    team: 'Team project · Game jam',
+    description:
+      'A story-driven Godot game set over a night shift in a hospital, where you play a nurse working through quests, dialogue, and levels.',
+    bullets: [
+      'Built the cutscenes between levels 8 → 9 and 9 → 10, plus scene lighting.',
+      'Added the black-screen story text that plays before the main game starts.',
+      'Implemented level-start monologues driven by the JSON dialogue system.',
+      'Set up menu music, global gameplay music, and dialogue sounds.',
+      'Worked alongside teammates on quests, NPCs, and polish through pull requests.',
+    ],
+    tags: ['Godot 4', 'GDScript', 'Game Jam', 'Teamwork'],
+    href: 'https://github.com/Miksz29/game',
+  },
+  {
     id: 'f1-race-predictor',
     title: 'F1 Race Predictor',
     role: 'ML Engineer · 2026',
     team: 'Solo project',
-    badge: null,
-    image: `${process.env.PUBLIC_URL}/projects/f1-race-predictor.png`,
     description:
       'A self-updating machine learning system that predicts Formula 1 race outcomes from real historical data, then turns those predictions into probabilities with a large-scale simulation.',
     bullets: [
@@ -37,7 +71,7 @@ const projects = [
       'Trains a Random Forest model to predict finishing position, validated against unseen recent races.',
       'Runs a 5,000-race Monte Carlo simulation to produce win, podium, and points probabilities.',
       'Ships an interactive Streamlit + Altair dashboard to explore the predictions.',
-      'Automated weekly via GitHub Actions — refreshes data, retrains, and re-predicts with no manual work.',
+      'Refreshes data, retrains, and re-predicts weekly through GitHub Actions with no manual work.',
     ],
     tags: ['Python', 'scikit-learn', 'FastF1', 'Streamlit', 'GitHub Actions'],
     href: 'https://github.com/Kummorrii/f1-race-predictor',

@@ -2,8 +2,6 @@ import React from 'react';
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 
 function ProjectsTile({ projects, onOpen }) {
-  const preview = projects[0];
-
   return (
     <div
       className="glass-card tile tile--projects"
@@ -27,15 +25,14 @@ function ProjectsTile({ projects, onOpen }) {
         </span>
       </div>
 
-      <div className="project-preview">
-        <p className="project-preview__title">{preview.title}</p>
-        <p className="project-preview__role">{preview.role}</p>
-        <div className="project-preview__tags">
-          {preview.tags.slice(0, 3).map((tag) => (
-            <span className="tag-chip tag-chip--tiny" key={tag}>{tag}</span>
-          ))}
-        </div>
-      </div>
+      <ul className="project-preview">
+        {projects.map((project) => (
+          <li className="project-preview__row" key={project.id}>
+            <span className="project-preview__title">{project.title}</span>
+            <span className="project-preview__role">{project.role}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

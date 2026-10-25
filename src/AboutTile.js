@@ -2,7 +2,10 @@ import React from 'react';
 import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 
 function AboutTile({ bio, socialLinks, onOpen }) {
-  const doubled = [...socialLinks, ...socialLinks];
+  // Repeat the set enough times that the track is always taller than the tile,
+  // then slide by exactly one set so the loop is seamless.
+  const COPIES = 8;
+  const repeated = Array.from({ length: COPIES }, () => socialLinks).flat();
 
   return (
     <div className="glass-card tile tile--about">
@@ -34,8 +37,8 @@ function AboutTile({ bio, socialLinks, onOpen }) {
       </div>
 
       <div className="social-ticker" aria-label="Social media links">
-        <div className="social-ticker__track">
-          {doubled.map(({ id, label, href, icon }, i) => (
+        <div className="social-ticker__track" style={{ '--copies': COPIES }}>
+          {repeated.map(({ id, label, href, icon }, i) => (
             <a
               key={`${id}-${i}`}
               className="social-ticker__icon"

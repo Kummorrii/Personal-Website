@@ -10,7 +10,7 @@ import AboutModal from './AboutModal';
 import StackModal from './StackModal';
 
 const bio =
-  "Hi, I am Glenn Michael L. Orlanes, Second-year BSIT Student studying in Cebu Institute of Technology - University. I have a huge passion for anything tech related such as devices, programming, cybersecurity and more. I am also a massive gamer.";
+  "Hi, I am Glenn Michael L. Orlanes, Second-year BSIT Student studying in Cebu Institute of Technology - University. I have a huge passion for anything tech related such as devices, programming, cybersecurity and more. I am also a massive gamer. Adrian";
 
 const interests = [
   'Gaming',
